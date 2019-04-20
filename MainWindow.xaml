@@ -18,36 +18,36 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Button x:Name="btnBrowse" Content="Open" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="BrowseButtonClick" Grid.Row="0"/>
-
+        <Button x:Name="btnAbout" Content="About" HorizontalAlignment="Right" VerticalAlignment="Top" Width="75" Click="btnAbout_Click" Grid.Row="0" Margin="0,0,0,0"/>
         <MediaElement Margin="0,20,0,63" x:Name="AtomPlayer" LoadedBehavior="Manual" UnloadedBehavior="Stop" Stretch="Fill" Height="Auto" Width="Auto" StretchDirection="Both" MouseLeftButtonUp="AtomPlayer_MouseLeftButtonUp" Panel.ZIndex="2" Grid.RowSpan="2" MediaFailed="mediaElement_MediaFailed"
             />
         <Grid x:Name="gridStatusBar" Grid.Row="1" Margin="10,0,10,8" VerticalAlignment="Bottom" MouseEnter="StatusBar_MouseEnter" MouseLeave="statusBar_MouseLeave">
-        <StatusBar x:Name="statusBar" Height="50" VerticalAlignment="Bottom">
-            <StatusBar.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                    </Grid>
-                </ItemsPanelTemplate>
-            </StatusBar.ItemsPanel>
-            <StatusBarItem>
-                <TextBlock Name="lblProgressStatus">00:00:00</TextBlock>
-            </StatusBarItem>
-            <StatusBarItem Grid.Column="1" HorizontalContentAlignment="Stretch" Foreground="#0087A2">
-                <Slider Name="sliProgress" ToolTip="Timeline" Thumb.DragStarted="sliProgress_DragStarted" Foreground="#0087A2" Thumb.DragCompleted="sliProgress_DragCompleted" ValueChanged="sliProgress_ValueChanged"/>
-            </StatusBarItem>
-            <StatusBarItem Grid.Column="2">
-                <ProgressBar Name="pbVolume" ToolTip="Volume" Width="50" Height="12" Maximum="1" Value="{Binding ElementName=AtomPlayer, Path=Volume}" Foreground="#0087A2"/>
-            </StatusBarItem>
-            <StatusBarItem Grid.Column="3">
-                <Slider Name="speedRatioSlider" ToolTip="Playback speed" VerticalAlignment="Center" ValueChanged="ChangeMediaSpeedRatio" Value="1" Width="70" />
-            </StatusBarItem>
-        </StatusBar>
+            <StatusBar x:Name="statusBar" Height="50" VerticalAlignment="Bottom">
+                <StatusBar.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ItemsPanelTemplate>
+                </StatusBar.ItemsPanel>
+                <StatusBarItem>
+                    <TextBlock Name="lblProgressStatus">00:00:00</TextBlock>
+                </StatusBarItem>
+                <StatusBarItem Grid.Column="1" HorizontalContentAlignment="Stretch" Foreground="#0087A2">
+                    <Slider Name="sliProgress" ToolTip="Timeline" Thumb.DragStarted="sliProgress_DragStarted" Foreground="#0087A2" Thumb.DragCompleted="sliProgress_DragCompleted" ValueChanged="sliProgress_ValueChanged"/>
+                </StatusBarItem>
+                <StatusBarItem Grid.Column="2">
+                    <ProgressBar Name="pbVolume" ToolTip="Volume" Width="50" Height="12" Maximum="1" Value="{Binding ElementName=AtomPlayer, Path=Volume}" Foreground="#0087A2"/>
+                </StatusBarItem>
+                <StatusBarItem Grid.Column="3">
+                    <Slider Name="speedRatioSlider" ToolTip="Playback speed" VerticalAlignment="Center" ValueChanged="ChangeMediaSpeedRatio" Value="1" Width="70" />
+                </StatusBarItem>
+            </StatusBar>
         </Grid>
         <Grid x:Name="gridButton" Grid.Row="2" MouseLeave="btn_MouseLeave" MouseEnter="btn_MouseEnter">
         <Label x:Name="btnPlay" Margin="20,0,0,10" VerticalAlignment="Stretch" Width="55" Height="Auto" HorizontalAlignment="Left"  MouseLeftButtonUp="btnPlay_Click" Cursor="Hand">

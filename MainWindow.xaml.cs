@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using Microsoft.Win32;
 using System.Runtime.InteropServices;
+using System.Speech.Recognition;
+using System.Speech.Synthesis;
 
 namespace AtomMediaPlayer
 {
@@ -108,6 +110,8 @@ namespace AtomMediaPlayer
             AtomPlayer.Volume += (e.Delta > 0) ? 0.1 : -0.1;
         }
 
+
+
         private void AtomPlayer_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (!DoubleClickTimer.IsEnabled)
@@ -160,6 +164,9 @@ namespace AtomMediaPlayer
                     btnPlay.Opacity = 1;
                     btnPause.Opacity = 1;
                     btnStop.Opacity = 1;
+
+                    statusBar.IsEnabled = true;
+
 
                 }
 
@@ -227,6 +234,19 @@ namespace AtomMediaPlayer
                 btnPause.IsEnabled = false;
                 btnPlay.IsEnabled = false;
                 btnStop.IsEnabled = false;
+            }
+        }
+
+        private void btnAbout_Click(object sender, RoutedEventArgs e)
+        {
+            About a = new About();
+            if(a.ShowDialog() == true)
+            {
+
+            }
+            else
+            {
+                return;
             }
         }
     }
