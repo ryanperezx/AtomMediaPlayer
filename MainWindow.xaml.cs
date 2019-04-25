@@ -249,5 +249,31 @@ namespace AtomMediaPlayer
                 return;
             }
         }
+
+        private void btnBrowse_MouseEnter(object sender, MouseEventArgs e)
+        {
+            btnBrowse.TextDecorations = TextDecorations.Underline;
+        }
+
+        private void btnBrowse_MouseLeave(object sender, MouseEventArgs e)
+        {
+            btnBrowse.TextDecorations = null;
+
+        }
+
+        private void btnExit_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void btnExit_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void btnExit_MouseLeave(object sender, MouseEventArgs e)
+        {
+
+        }
     }
 }
