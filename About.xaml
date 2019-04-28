@@ -4,12 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AtomMediaPlayer"
+        WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         Title="About" Height="300" Width="500">
     <Grid>
-        <iconPacks:PackIconMaterial Kind="Information" Margin="220,50,0,0" Height="35" Width="51" />
-        <TextBlock VerticalAlignment="Top" HorizontalAlignment="Left" Margin="118,98,0,0" FontWeight="DemiBold">Made as an requirement for Software Engineering</TextBlock>
-        <TextBlock VerticalAlignment="Top" HorizontalAlignment="Left" Margin="172,119,0,0">Made by: Ryan Andrei Perez</TextBlock>
+        <iconPacks:PackIconMaterial Kind="Information" Margin="222,83,0,0" Height="35" Width="51" />
+        <TextBlock VerticalAlignment="Top" HorizontalAlignment="Left" Margin="120,131,0,0" FontWeight="DemiBold">Made as an requirement for Software Engineering</TextBlock>
+        <TextBlock VerticalAlignment="Top" HorizontalAlignment="Left" Margin="174,152,0,0">Made by: Ryan Andrei Perez</TextBlock>
     </Grid>
 </Window>

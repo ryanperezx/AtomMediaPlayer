@@ -8,30 +8,52 @@
         xmlns:local="clr-namespace:AtomMediaPlayer"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Width="{Binding ActualWidth, RelativeSource = {RelativeSource AncestorType = {x:Type Window}}}" 
-        Height="{Binding ActualHeight,  RelativeSource ={RelativeSource AncestorType = {x:Type Window}}}"
+        MinWidth="500" 
+        MinHeight="500"
         Title="Atom Player"
         d:DesignHeight="768" d:DesignWidth="1366">
 
     <Window.Resources>
         <ResourceDictionary>
             <Storyboard x:Key="MenuOpen">
-                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
+                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridFile">
                     <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
                     <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="200"/>
                 </DoubleAnimationUsingKeyFrames>
-                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="GridMenu">
+                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="GridFile">
                     <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
                     <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="300"/>
                 </DoubleAnimationUsingKeyFrames>
             </Storyboard>
 
             <Storyboard x:Key="MenuClose">
-                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
+                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridFile">
                     <EasingDoubleKeyFrame KeyTime="0" Value="200"/>
                     <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
                 </DoubleAnimationUsingKeyFrames>
-                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="GridMenu">
+                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="GridFile">
+                    <EasingDoubleKeyFrame KeyTime="0" Value="300"/>
+                    <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
+                </DoubleAnimationUsingKeyFrames>
+            </Storyboard>
+
+            <Storyboard x:Key="HelpOpen">
+                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridHelp">
+                    <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                    <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="200"/>
+                </DoubleAnimationUsingKeyFrames>
+                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="GridHelp">
+                    <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                    <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="300"/>
+                </DoubleAnimationUsingKeyFrames>
+            </Storyboard>
+
+            <Storyboard x:Key="HelpClose">
+                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridHelp">
+                    <EasingDoubleKeyFrame KeyTime="0" Value="200"/>
+                    <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
+                </DoubleAnimationUsingKeyFrames>
+                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="GridHelp">
                     <EasingDoubleKeyFrame KeyTime="0" Value="300"/>
                     <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
                 </DoubleAnimationUsingKeyFrames>
@@ -46,6 +68,12 @@
         <EventTrigger RoutedEvent="ToggleButton.Unchecked" SourceName="btnFile">
             <BeginStoryboard Storyboard="{StaticResource MenuClose}"/>
         </EventTrigger>
+        <EventTrigger RoutedEvent="ToggleButton.Checked" SourceName="btnHelp1">
+            <BeginStoryboard Storyboard="{StaticResource HelpOpen}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ToggleButton.Unchecked" SourceName="btnHelp1">
+            <BeginStoryboard Storyboard="{StaticResource HelpClose}"/>
+        </EventTrigger>
     </Window.Triggers>
 
     <Grid x:Name="gridPlayer" MouseWheel="Grid_MouseWheel">
@@ -55,11 +83,12 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <ToggleButton x:Name="btnFile" Content="File" Style="{DynamicResource MaterialDesignFlatButton}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto" Grid.Row="0" Height="35" Foreground="#0087A2" Cursor="Hand"/>
+        <ToggleButton x:Name="btnHelp1" Content="Help" Style="{DynamicResource MaterialDesignFlatButton}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="Auto" Grid.Row="0" Height="35" Foreground="#0087A2" Cursor="Hand" Margin="59,0,0,0"/>
 
-        <Grid x:Name="GridMenu" Width="200" Height="500" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,35,0,0" Panel.ZIndex="3" Grid.RowSpan="3">
+        <Grid x:Name="GridFile" Width="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,35,0,0" Panel.ZIndex="3" Grid.RowSpan="3">
             <materialDesign:Card
             materialDesign:ShadowAssist.ShadowDepth="Depth3"
-            materialDesign:ShadowAssist.ShadowEdges="All" VerticalAlignment="Stretch" HorizontalAlignment="Left">
+            materialDesign:ShadowAssist.ShadowEdges="All" VerticalAlignment="Stretch" HorizontalAlignment="Left" Width="130">
                 <Grid>
                     <TextBlock x:Name="btnBrowse" HorizontalAlignment="Right" TextAlignment="Right" VerticalAlignment="Top" Width="190" Height="25" FontSize="12" MouseLeftButtonUp="BrowseButtonClick" MouseEnter="btnBrowse_MouseEnter" MouseLeave="btnBrowse_MouseLeave" Cursor="Hand" Margin="0,11,10,0">
                         <Grid Width="85">
@@ -75,12 +104,31 @@
                     </TextBlock>
                 </Grid>
             </materialDesign:Card>
-
         </Grid>
 
-        <Button x:Name="btnAbout" Content="About" HorizontalAlignment="Right" VerticalAlignment="Top" Width="75" Click="btnAbout_Click" Grid.Row="0" Margin="0,0,0,0"/>
-        <MediaElement Margin="0,40,0,63" x:Name="AtomPlayer" LoadedBehavior="Manual" UnloadedBehavior="Stop" Stretch="Fill" Height="Auto" Width="Auto" StretchDirection="Both" MouseLeftButtonUp="AtomPlayer_MouseLeftButtonUp" Panel.ZIndex="2" Grid.RowSpan="2" MediaFailed="mediaElement_MediaFailed"
-            />
+        <Grid x:Name="GridHelp" Width ="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,35,0,0" Panel.ZIndex="3" Grid.RowSpan="3">
+            <materialDesign:Card
+            materialDesign:ShadowAssist.ShadowDepth="Depth3"
+            materialDesign:ShadowAssist.ShadowEdges="All" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="69,0,0,0">
+                <Grid>
+                    <TextBlock x:Name="btnHelp" HorizontalAlignment="Right" TextAlignment="Right" VerticalAlignment="Top" Width="190" Height="25" FontSize="12" MouseLeftButtonUp="btnHelp_MouseLeftButtonUp" MouseEnter="btnHelp_MouseEnter" MouseLeave="btnHelp_MouseLeave" Cursor="Hand" Margin="0,11,10,0">
+                        <Grid Width="85">
+                            <iconPacks:PackIconMaterial Kind="Help" Height="15"/>
+                            <TextBlock Text="Help"/>
+                        </Grid>
+                    </TextBlock>
+                    <TextBlock x:Name="btnAbout" HorizontalAlignment="Right" TextAlignment="Right" VerticalAlignment="Top" Width="190" Height="25" FontSize="12" MouseLeftButtonUp="btnAbout_Click" MouseEnter="btnAbout_MouseEnter" MouseLeave="btnAbout_MouseLeave" Cursor="Hand" Margin="0,41,10,0">
+                        <Grid Width="85">
+                            <iconPacks:PackIconMaterial Kind="Information" Height="15"/>
+                            <TextBlock Text="About"/>
+                        </Grid>
+                    </TextBlock>
+                </Grid>
+            </materialDesign:Card>
+        </Grid>
+
+        <MediaElement  Margin="0,40,0,63" x:Name="AtomPlayer" LoadedBehavior="Manual" UnloadedBehavior="Stop" Stretch="Uniform" Height="Auto" Width="Auto" StretchDirection="Both" MouseLeftButtonUp="AtomPlayer_MouseLeftButtonUp" Panel.ZIndex="2" Grid.RowSpan="2" MediaFailed="mediaElement_MediaFailed" MediaEnded="AtomPlayer_MediaEnded" />
+        <TextBlock Margin="0,0,368,104" FontSize="15" x:Name="tbMarker" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Row="1" Width="607" Height="70"/>
         <Grid x:Name="gridStatusBar" Grid.Row="1" Margin="10,0,10,8" VerticalAlignment="Bottom" MouseEnter="StatusBar_MouseEnter" MouseLeave="statusBar_MouseLeave">
             <StatusBar x:Name="statusBar" Height="50" VerticalAlignment="Bottom">
                 <StatusBar.ItemsPanel>
@@ -96,7 +144,7 @@
                     </ItemsPanelTemplate>
                 </StatusBar.ItemsPanel>
                 <StatusBarItem>
-                    <TextBlock Name="lblProgressStatus">00:00:00</TextBlock>
+                    <TextBlock Name="lblProgressStatus" ToolTip="Time Marker">00:00:00</TextBlock>
                 </StatusBarItem>
                 <StatusBarItem Grid.Column="1" HorizontalContentAlignment="Stretch" Foreground="#0087A2">
                     <Slider Name="sliProgress" ToolTip="Timeline" Thumb.DragStarted="sliProgress_DragStarted" Foreground="#0087A2" Thumb.DragCompleted="sliProgress_DragCompleted" ValueChanged="sliProgress_ValueChanged"/>
@@ -114,10 +162,16 @@
                 <iconPacks:PackIconMaterial  Kind="PlayCircleOutline" Width="45" Height="Auto" Foreground="#0087A2" Cursor="Hand"/>
             </Label>
             <Label x:Name="btnPause" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="55" MouseLeftButtonUp="btnPause_Click" Height="Auto" Cursor="Hand" Margin="90,0,0,10" >
-                <iconPacks:PackIconMaterial Kind="PauseCircleOutline" Width="45" MouseLeftButtonUp="btnPause_Click" Height="Auto" Foreground="#0087A2" />
+                <iconPacks:PackIconMaterial Kind="PauseCircleOutline" Width="45" Height="Auto" Foreground="#0087A2" />
             </Label>
             <Label x:Name="btnStop" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="55" PreviewMouseLeftButtonUp="btnStop_Click" Height="Auto" Margin="160,0,0,10" Cursor="Hand" >
-                <iconPacks:PackIconMaterial  Kind="StopCircleOutline" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="45" PreviewMouseLeftButtonUp="btnStop_Click" Height="Auto" Foreground="#0087A2"/>
+                <iconPacks:PackIconMaterial  Kind="StopCircleOutline" Width="45" Height="Auto" Foreground="#0087A2"/>
+            </Label>
+            <Label x:Name="btnLoop" ToolTip="Loop" HorizontalAlignment="Left" VerticalAlignment="Center" PreviewMouseLeftButtonUp="btnLoop_PreviewMouseLeftButtonUp" Width="55" Height="Auto" Margin="236,0,0,10" Cursor="Hand">
+                <iconPacks:PackIconMaterial Kind="Loop" Foreground="#0087A2" Width="45" Height="Auto" />
+            </Label>
+            <Label x:Name="btnRepeat" ToolTip="Repeat" HorizontalAlignment="Left" VerticalAlignment="Center" PreviewMouseLeftButtonUp="btnRepeat_PreviewMouseLeftButtonUp" Width="55" Height="Auto" Margin="310,0,0,10" Cursor="Hand">
+                <iconPacks:PackIconMaterial x:Name="repeat" Kind="Repeat" Foreground="#0087A2" Width="45" Height="Auto" />
             </Label>
         </Grid>
     </Grid>

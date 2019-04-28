@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Win32;
+using System;
 using System.IO;
-using System.Text;
-using System.Windows.Threading;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using Microsoft.Win32;
-using System.Runtime.InteropServices;
-using System.Speech.Recognition;
-using System.Speech.Synthesis;
-
+using System.Windows.Threading;
+using System.Windows.Media.Media3D;
 namespace AtomMediaPlayer
 {
     /// <summary>
@@ -23,11 +15,15 @@ namespace AtomMediaPlayer
     /// </summary>
     public partial class MainWindow : Window
     {
-        private bool mediaPlayerIsPlaying = false;
         private bool userIsDraggingSlider = false;
-
+        private bool repeatIndefinitely = false;
         private bool fullscreen = false;
+        private bool continueLoop = false;
+
+        TimeSpan startLoop, endLoop;
+
         private DispatcherTimer DoubleClickTimer = new DispatcherTimer();
+        private DispatcherTimer loopTimer;
 
         public MainWindow()
         {
@@ -40,11 +36,30 @@ namespace AtomMediaPlayer
 
             DoubleClickTimer.Interval = TimeSpan.FromMilliseconds(GetDoubleClickTime());
             DoubleClickTimer.Tick += (s, e) => DoubleClickTimer.Stop();
+
+            loopTimer = new DispatcherTimer();
+            loopTimer.Interval = TimeSpan.FromSeconds(1);
+            loopTimer.Tick += new EventHandler(loopTimer_Tick);
+        }
+
+        private void loopTimer_Tick(object sender, EventArgs e)
+        {
+            //At the end of a Tick period, reset the MediaElement Position and Play again
+            if (AtomPlayer.Source != null && AtomPlayer.Position.TotalSeconds > endLoop.TotalSeconds && continueLoop)
+            {
+                if (continueLoop)
+                {
+                    AtomPlayer.Position = startLoop;
+                }
+                //Restart the timer
+                loopTimer.Start();
+            }
         }
 
         private void timer_Tick(object sender, EventArgs e)
         {
-            if((AtomPlayer.Source != null) && (AtomPlayer.NaturalDuration.HasTimeSpan) && (!userIsDraggingSlider)){
+            if ((AtomPlayer.Source != null) && (AtomPlayer.NaturalDuration.HasTimeSpan) && (!userIsDraggingSlider))
+            {
                 sliProgress.Minimum = 0;
                 sliProgress.Maximum = AtomPlayer.NaturalDuration.TimeSpan.TotalSeconds;
                 sliProgress.Value = AtomPlayer.Position.TotalSeconds;
@@ -67,6 +82,7 @@ namespace AtomMediaPlayer
                 string selectedFileName = dlg.FileName;
                 AtomPlayer.Source = new Uri(selectedFileName);
                 AtomPlayer.Play();
+                loopTimer.Start();
                 this.Title = Path.GetFileNameWithoutExtension(selectedFileName);
             }
 
@@ -75,7 +91,6 @@ namespace AtomMediaPlayer
         private void btnPlay_Click(object sender, RoutedEventArgs e)
         {
             AtomPlayer.Play();
-            mediaPlayerIsPlaying = true;
         }
 
         private void btnPause_Click(object sender, RoutedEventArgs e)
@@ -86,7 +101,7 @@ namespace AtomMediaPlayer
         private void btnStop_Click(object sender, RoutedEventArgs e)
         {
             AtomPlayer.Stop();
-            mediaPlayerIsPlaying = false;
+            loopTimer.Stop();
         }
 
         private void sliProgress_DragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
@@ -109,8 +124,6 @@ namespace AtomMediaPlayer
         {
             AtomPlayer.Volume += (e.Delta > 0) ? 0.1 : -0.1;
         }
-
-
 
         private void AtomPlayer_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -149,7 +162,7 @@ namespace AtomMediaPlayer
                     this.WindowState = WindowState.Normal;
                     Grid.SetRowSpan(AtomPlayer, 2);
                     AtomPlayer.Margin = new Thickness(0, 20, 0, 63);
-                    AtomPlayer.Stretch = Stretch.UniformToFill;
+                    AtomPlayer.Stretch = Stretch.Uniform;
 
                     Panel.SetZIndex(statusBar, 1);
                     Panel.SetZIndex(btnPlay, 1);
@@ -240,7 +253,7 @@ namespace AtomMediaPlayer
         private void btnAbout_Click(object sender, RoutedEventArgs e)
         {
             About a = new About();
-            if(a.ShowDialog() == true)
+            if (a.ShowDialog() == true)
             {
 
             }
@@ -263,17 +276,93 @@ namespace AtomMediaPlayer
 
         private void btnExit_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-
+            this.Close();
         }
 
         private void btnExit_MouseEnter(object sender, MouseEventArgs e)
         {
-
+            btnExit.TextDecorations = TextDecorations.Underline;
         }
 
         private void btnExit_MouseLeave(object sender, MouseEventArgs e)
         {
+            btnExit.TextDecorations = null;
 
+        }
+
+        private void btnHelp_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Help h = new Help();
+            if (h.ShowDialog() == true)
+            {
+
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        private void btnHelp_MouseEnter(object sender, MouseEventArgs e)
+        {
+            btnHelp.TextDecorations = TextDecorations.Underline;
+        }
+
+        private void btnHelp_MouseLeave(object sender, MouseEventArgs e)
+        {
+            btnHelp.TextDecorations = null;
+        }
+
+        private void btnAbout_MouseEnter(object sender, MouseEventArgs e)
+        {
+            btnAbout.TextDecorations = TextDecorations.Underline;
+        }
+
+        private void btnAbout_MouseLeave(object sender, MouseEventArgs e)
+        {
+            btnAbout.TextDecorations = null;
+        }
+
+        private void btnLoop_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Loop a = new Loop();
+            if(a.ShowDialog() == true){
+                continueLoop = !continueLoop;
+                startLoop = a.from;
+                endLoop = a.to;
+                MessageBox.Show(startLoop.ToString());
+                MessageBox.Show(endLoop.ToString());
+
+            }
+            else
+            {
+                continueLoop = false;
+                startLoop = TimeSpan.FromSeconds(0);
+                endLoop = TimeSpan.FromSeconds(0);
+                return;
+            }
+        }
+
+        private void btnRepeat_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            repeatIndefinitely = !repeatIndefinitely;
+            if (repeatIndefinitely == true)
+            {
+                repeat.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF75949B"));
+            }
+            else
+            {
+                repeat.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#0087A2"));
+            }
+        }
+
+        private void AtomPlayer_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            if (repeatIndefinitely)
+            {
+                AtomPlayer.Position = TimeSpan.FromSeconds(0);
+                AtomPlayer.Play();
+            }
         }
     }
 }
